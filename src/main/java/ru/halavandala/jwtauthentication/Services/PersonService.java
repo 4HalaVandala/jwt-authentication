@@ -6,7 +6,7 @@ import ru.halavandala.jwtauthentication.Model.RegisterCredentionals;
 import java.util.Optional;
 
 public interface PersonService {
-    public boolean create(Person person);
+    public Person  create(RegisterCredentionals registerCredentionals);
 
     public boolean delete(String username);
 

@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,33 +14,27 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Person implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", unique = true)
     private Long id;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
     @Column(name = "password_hash")
     private String passwordHash;
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "user_role")
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.LAZY)
-    private Set<Role> role = new HashSet<>();
+    private  String role;
 
-    public Collection<? extends GrantedAuthority> authorities;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (var r : this.role) {
-            var sga = new SimpleGrantedAuthority(r.name());
-        }
         return authorities;
     }
 
@@ -74,16 +67,11 @@ public class Person implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
-    public Person(String email, String passwordHash, String username, Collection<? extends GrantedAuthority> authorities) {
-
+    public Person(String email, String passwordHash, String username, String role) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.username = username;
-        this.authorities = authorities;
+        this.role = role;
     }
+
 }
