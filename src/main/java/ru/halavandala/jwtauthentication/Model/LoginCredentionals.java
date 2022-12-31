@@ -5,12 +5,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class LoginCredentionals {
-    private String email;
+    private String username;
     private String password;
 }
 
