@@ -16,6 +16,7 @@ import ru.halavandala.jwtauthentication.Service.DefaultUserService;
 @RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
     private final DefaultUserService userService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUsername(username);

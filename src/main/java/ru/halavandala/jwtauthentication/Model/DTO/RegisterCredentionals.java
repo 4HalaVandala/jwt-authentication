@@ -1,9 +1,6 @@
-package ru.halavandala.jwtauthentication.Model;
+package ru.halavandala.jwtauthentication.Model.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Data
 public class RegisterCredentionals {

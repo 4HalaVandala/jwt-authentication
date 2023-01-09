@@ -1,51 +1,39 @@
 package ru.halavandala.jwtauthentication.Controllers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.halavandala.jwtauthentication.Model.LoginCredentionals;
+import ru.halavandala.jwtauthentication.Model.DTO.LoginCredentionals;
+import ru.halavandala.jwtauthentication.Model.DTO.RegisterCredentionals;
 import ru.halavandala.jwtauthentication.Model.User;
 import ru.halavandala.jwtauthentication.Security.jwt.JwtTokenProvider;
 import ru.halavandala.jwtauthentication.Service.DefaultUserService;
-
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @Slf4j
-public class AuthController {
+@RequiredArgsConstructor
+public class UnauthorizedController {
 
     private final AuthenticationManager authenticationManager;
-
+    private final DefaultUserService defaultUserService;
     private final JwtTokenProvider jwtTokenProvider;
-
     private final DefaultUserService userService;
 
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, DefaultUserService userService, BCryptPasswordEncoder passwordEncoder) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginCredentionals loginCredentionals) {
+    public ResponseEntity<?> login(@RequestBody LoginCredentionals loginCredentionals) {
         try {
             String username = loginCredentionals.getUsername();
             authenticationManager.authenticate(
@@ -68,6 +56,15 @@ public class AuthController {
         } catch (AuthenticationException e) {
             log.info(String.valueOf(e));
             throw new BadCredentialsException("Invalid username or password");
+
         }
+    }
+    @PostMapping("/register")
+    public ResponseEntity registerUser(@RequestBody RegisterCredentionals registerCredentionals) {
+        User user = userService.userRegister(registerCredentionals);
+        if (user != null) {
+            return ResponseEntity.ok().body("User successfully registered: " + user);
+        } return ResponseEntity.badRequest().body("User already exist");
+
     }
 }

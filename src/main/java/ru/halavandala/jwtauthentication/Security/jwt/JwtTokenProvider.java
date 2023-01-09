@@ -3,14 +3,13 @@ package ru.halavandala.jwtauthentication.Security.jwt;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.halavandala.jwtauthentication.Model.Role;
@@ -21,18 +20,14 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
     @Value("${jwt.token.secret}")
     private String secret;
-
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
-
-
     @Autowired
     private UserDetailsService userDetailsService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
 
     @PostConstruct
@@ -58,6 +53,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
+
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -83,6 +79,7 @@ public class JwtTokenProvider {
 
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            log.info(String.valueOf(e));
             throw new JwtAuthException("JWT token is expired or invalid");
         }
     }

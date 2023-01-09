@@ -13,22 +13,22 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public final class JwtUserFactory {
-   public static final JwtUser create(User user) {
+    public static final JwtUser create(User user) {
 
-    return new JwtUser(
-            user.getId(),
-            user.getUsername(),
-            user.getPasswordHash(),
-            user.getEmail(),
-            user.getStatus().equals(Status.ACTIVE),
-            mapToGrantedAuthorities(new ArrayList<>(user.getRoles()))
-    );
+        return new JwtUser(
+                user.getId(),
+                user.getUsername(),
+                user.getPasswordHash(),
+                user.getEmail(),
+                user.getStatus().equals(Status.ACTIVE),
+                mapToGrantedAuthorities(new ArrayList<>(user.getRoles()))
+        );
     }
 
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> userRoles) {
-       return userRoles.stream()
-               .map(role ->
-                       new SimpleGrantedAuthority(role.getName()))
-               .collect(Collectors.toList());
+        return userRoles.stream()
+                .map(role ->
+                        new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 }
