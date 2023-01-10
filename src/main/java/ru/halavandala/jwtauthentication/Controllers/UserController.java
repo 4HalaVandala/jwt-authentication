@@ -15,7 +15,7 @@ public class UserController {
 
     @PutMapping("/updatePassword")
     public ResponseEntity userUpdatePassword(@RequestBody UpdatePasswordRequest request) {
-    boolean updated = userService.updatePassword(request);
+    boolean updated = userService.updatePasswordForUser(request);
     if (updated) {
         return ResponseEntity.ok().body("Password updated for user with username: " + request.getUsername());
     } return  ResponseEntity.badRequest().body("Username or password incorrect");

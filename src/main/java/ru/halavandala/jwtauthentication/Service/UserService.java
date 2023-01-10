@@ -24,5 +24,5 @@ public interface UserService {
 
     void delete(String username);
 
-    boolean updatePassword(UpdatePasswordRequest request);
+    boolean updatePasswordForUser(UpdatePasswordRequest request);
 }

@@ -1,5 +1,6 @@
 package ru.halavandala.jwtauthentication.Service;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -107,7 +108,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public boolean updatePassword(UpdatePasswordRequest request) {
+    public boolean updatePasswordForUser(UpdatePasswordRequest request) {
         User user = findByUsername(request.getUsername());
         if (user == null) {
             log.info("IN updatePassowrd - User with username: {} not found", request.getUsername());
@@ -117,7 +118,7 @@ public class DefaultUserService implements UserService {
             log.info("IN updatePassowrd - passswords doesn't match");
             return false;
         }
-        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepo.updatePassword(request.getUsername(), passwordEncoder.encode(request.getNewPassword()));
 
         return true;
     }

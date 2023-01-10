@@ -1,5 +1,6 @@
 package ru.halavandala.jwtauthentication.Repos;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,8 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     void deleteByUsername(String username);
 
+    @Modifying
+    @Query("UPDATE User u set u.passwordHash =:newPassword WHERE u.username =:username")
+    @Transactional
+    void updatePassword(@Param(value = "username") String username,@Param(value = "newPassword") String newPassword);
 }
