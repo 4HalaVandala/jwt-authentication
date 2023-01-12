@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="JpbDataSourceConfig">
-    <data-sources>
-      <data-source id="a9585057-f165-4637-86db-7a5163e742c8" name="jwt-authentication" url="jdbc:postgresql://localhost/jwt_db" driverClass="org.postgresql.Driver" />
-    </data-sources>
-  </component>
-</project>
