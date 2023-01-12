@@ -25,3 +25,4 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Transactional
     void updatePassword(@Param(value = "username") String username,@Param(value = "newPassword") String newPassword);
 }
+
