@@ -1,5 +1,7 @@
 package ru.halavandala.jwtauthentication.Controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import java.util.Map;
 @RequestMapping("/api/v1/auth")
 @Slf4j
 @RequiredArgsConstructor
+@Api(description = "UnauthorizedController")
 public class UnauthorizedController {
 
     private final AuthenticationManager authenticationManager;
@@ -33,6 +36,7 @@ public class UnauthorizedController {
 
 
     @PostMapping("/login")
+    @ApiOperation("Login page")
     public ResponseEntity<?> login(@RequestBody LoginCredentionals loginCredentionals) {
         try {
             String username = loginCredentionals.getUsername();
@@ -60,6 +64,7 @@ public class UnauthorizedController {
         }
     }
     @PostMapping("/register")
+    @ApiOperation("Register for users")
     public ResponseEntity registerUser(@RequestBody RegisterCredentionals registerCredentionals) {
         User user = userService.userRegister(registerCredentionals);
         if (user != null) {

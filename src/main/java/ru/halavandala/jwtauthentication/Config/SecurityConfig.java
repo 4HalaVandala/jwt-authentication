@@ -36,7 +36,7 @@ public class SecurityConfig {
                                 auth.requestMatchers("/api/v1/auth/**").permitAll()
                                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                                         .requestMatchers("/api/v1/user/**").hasRole("USER")
-                                        .anyRequest().authenticated()
+                                        .anyRequest().permitAll()
                                         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                                         .and().apply(new JwtConfigurer(jwtTokenProvider));
 
